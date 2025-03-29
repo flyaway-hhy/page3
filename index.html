@@ -18,6 +18,108 @@
             transition: all 0.5s ease;
         }
         
+        .top-nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #fff;
+            padding: 10px 20px;
+            border-bottom: 1px solid #e1e4e8;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .nav-left {
+            display: flex;
+            align-items: center;
+        }
+        
+        .platform-logo {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+        }
+        
+        .platform-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            margin-left: 30px;
+        }
+        
+        .nav-menu li {
+            margin: 0 15px;
+        }
+        
+        .nav-menu a {
+            text-decoration: none;
+            color: #333;
+            font-size: 14px;
+            padding: 5px 0;
+            position: relative;
+        }
+        
+        .nav-menu a.active {
+            color: #3498db;
+        }
+        
+        .nav-menu a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #3498db;
+        }
+        
+        .nav-right {
+            display: flex;
+            align-items: center;
+        }
+        
+        .search-box {
+            display: flex;
+            align-items: center;
+            background-color: #f5f7fa;
+            border-radius: 20px;
+            padding: 5px 15px;
+            margin-right: 15px;
+        }
+        
+        .search-box input {
+            border: none;
+            background: transparent;
+            outline: none;
+            padding: 5px;
+            width: 150px;
+            font-size: 14px;
+        }
+        
+        .search-box button {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            color: #95a5a6;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+        
+        .user-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -92,13 +194,6 @@
             margin-bottom: 30px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
             border-left: 4px solid #9b59b6;
-            display: none;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.5s ease, transform 0.5s ease;
-        }
-        
-        .question-container.visible {
             opacity: 1;
             transform: translateY(0);
         }
@@ -267,38 +362,6 @@
             transition: width 0.5s ease;
         }
         
-        .generate-btn {
-            background-color: #9b59b6;
-            color: white;
-            border: none;
-            padding: 15px 25px;
-            border-radius: 30px;
-            font-size: 16px;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(155, 89, 182, 0.3);
-            transition: all 0.3s ease;
-            margin-bottom: 30px;
-            display: block;
-            margin: 0 auto;
-        }
-        
-        .generate-btn:hover {
-            background-color: #8e44ad;
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(155, 89, 182, 0.4);
-        }
-        
-        .generate-btn:active {
-            transform: translateY(0);
-        }
-        
-        .generate-btn:disabled {
-            background-color: #95a5a6;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-        
         .select-btn {
             background-color: #e74c3c;
             color: white;
@@ -310,7 +373,7 @@
             box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
             transition: all 0.3s ease;
             margin-bottom: 30px;
-            display: none;
+            display: block;
             margin: 0 auto;
         }
         
@@ -430,6 +493,32 @@
     </style>
 </head>
 <body>
+    <div class="top-nav">
+        <div class="nav-left">
+            <img src="avatars/logo.jpg" alt="平台logo" class="platform-logo">
+            <div class="platform-title">遥感大模型实践创新平台</div>
+            <ul class="nav-menu">
+                <li><a href="#">平台资源</a></li>
+                <li><a href="#">数据检索</a></li>
+                <li><a href="#">任务管理</a></li>
+                <li><a href="#">模型推理</a></li>
+                <li><a href="#">模型学习</a></li>
+                <li><a href="#">实习实训</a></li>
+                <li><a href="#" class="active">学科问答</a></li>
+                <li><a href="#">关于我们</a></li>
+            </ul>
+        </div>
+        <div class="nav-right">
+            <div class="search-box">
+                <input type="text" placeholder="输入搜索内容">
+                <button>🔍</button>
+            </div>
+            <div class="user-info">
+                <span>用户20213021</span>
+            </div>
+        </div>
+    </div>
+
     <div class="container">
         <header>
             <h1>大模型智能提问系统</h1>
@@ -451,13 +540,9 @@
             </div>
         </div>
         
-        <button class="generate-btn" id="generateBtn">生成问题</button>
-        
         <div class="question-container" id="questionContainer">
-            <div class="question-title">大模型生成的问题<span class="ai-badge">AI生成</span></div>
-            <div class="question-content" id="questionContent">
-                <!-- 问题将在这里动态生成 -->
-            </div>
+            <div class="question-title">教师提问</div>
+            <textarea id="teacherQuestion" placeholder="请输入问题..." rows="4" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ddd; font-size: 16px; resize: vertical;"></textarea>
         </div>
         
         <button class="select-btn" id="selectBtn">挑选需要回答的学生</button>
@@ -474,7 +559,7 @@
     
     <div class="loading-overlay" id="loadingOverlay">
         <div class="loading-spinner"></div>
-        <div class="loading-text" id="loadingText">大模型正在生成问题...</div>
+        <div class="loading-text" id="loadingText">大模型正在分析学生预习情况...</div>
         <div class="loading-progress">
             <div class="loading-progress-fill" id="loadingProgressFill"></div>
         </div>
@@ -499,70 +584,32 @@
             { id: "2023302131299", name: "周帅", avatar: "avatars/14.jpg", score: 88 },
             { id: "2023302131328", name: "赵依晗", avatar: "avatars/15.jpg", score: 90 },
             { id: "2023302131068", name: "桑浩明", avatar: "avatars/16.jpg", score: 81 },
-            { id: "2023302131081", name: "许安然", avatar: "avatars/17.jpg", score: 87 },
+            { id: "2023302131081", name: "许安然", avatar: "avatars/17.jpg", score: 67 },
             { id: "2023302131115", name: "徐豪", avatar: "avatars/18.jpg", score: 88 },
             { id: "2023302131195", name: "张馨怡", avatar: "avatars/19.jpg", score: 88 },
             { id: "2023302131211", name: "文诗语", avatar: "avatars/20.jpg", score: 80 }
         ];
         
-        // 预定义的问题
-        const questions = [
-            "请解释人工智能如何通过个性化学习提高学生的学习效率，并举例说明。",
-            "在AI辅助教学中，教师的角色将如何转变？教师需要掌握哪些新技能？",
-            "智能辅导系统与传统辅导方式相比有哪些优势和局限性？",
-            "AI在教育评估中的应用可能带来哪些变革？这些变革对学生学习有何影响？",
-            "分析人工智能在教育中应用的伦理问题，如何平衡技术创新与教育公平？"
-        ];
-        
-        const generateBtn = document.getElementById('generateBtn');
         const selectBtn = document.getElementById('selectBtn');
         const resetBtn = document.getElementById('resetBtn');
         const questionContainer = document.getElementById('questionContainer');
-        const questionContent = document.getElementById('questionContent');
         const studentsContainer = document.getElementById('studentsContainer');
         const selectedStudents = document.getElementById('selectedStudents');
         const loadingOverlay = document.getElementById('loadingOverlay');
         const loadingText = document.getElementById('loadingText');
         const loadingProgressFill = document.getElementById('loadingProgressFill');
         
-        // 生成问题
-        function generateQuestion() {
-            loadingOverlay.classList.add('active');
-            loadingText.textContent = "大模型正在生成问题...";
-            
-            let progress = 0;
-            const interval = setInterval(() => {
-                progress += Math.random() * 10;
-                if (progress >= 100) {
-                    progress = 100;
-                    clearInterval(interval);
-                    
-                    // 完成问题生成
-                    setTimeout(() => {
-                        loadingOverlay.classList.remove('active');
-                        
-                        // 随机选择一个问题
-                        const randomQuestion = questions[Math.floor(Math.random() * questions.length)];
-                        questionContent.textContent = randomQuestion;
-                        
-                        // 显示问题容器
-                        questionContainer.style.display = 'block';
-                        setTimeout(() => {
-                            questionContainer.classList.add('visible');
-                        }, 100);
-                        
-                        // 隐藏生成按钮，显示选择按钮
-                        generateBtn.style.display = 'none';
-                        selectBtn.style.display = 'block';
-                    }, 500);
-                }
-                
-                loadingProgressFill.style.width = `${progress}%`;
-            }, 200);
-        }
-        
         // 选择预习情况不理想的学生
         function selectStudents() {
+            // 获取教师输入的问题
+            const teacherQuestion = document.getElementById('teacherQuestion').value;
+            
+            // 如果教师没有输入问题，提示并返回
+            if (!teacherQuestion.trim()) {
+                alert('请先输入问题再挑选学生');
+                return;
+            }
+            
             loadingOverlay.classList.add('active');
             loadingText.textContent = "大模型正在分析学生预习情况...";
             
@@ -651,31 +698,29 @@
         
         // 重置页面
         function resetPage() {
-            // 隐藏问题和学生容器
-            questionContainer.classList.remove('visible');
+            // 隐藏学生容器
             studentsContainer.classList.remove('visible');
             
             setTimeout(() => {
-                questionContainer.style.display = 'none';
                 studentsContainer.style.display = 'none';
                 
-                // 显示生成按钮，隐藏重置按钮
-                generateBtn.style.display = 'block';
+                // 清空教师问题输入框
+                document.getElementById('teacherQuestion').value = '';
+                
+                // 显示选择按钮，隐藏重置按钮
+                selectBtn.style.display = 'block';
                 resetBtn.style.display = 'none';
             }, 500);
         }
         
         // 绑定按钮事件
-        generateBtn.addEventListener('click', generateQuestion);
         selectBtn.addEventListener('click', selectStudents);
         resetBtn.addEventListener('click', resetPage);
         
         // 页面加载完成后初始化
         window.addEventListener('DOMContentLoaded', () => {
             // 初始状态
-            questionContainer.style.display = 'none';
             studentsContainer.style.display = 'none';
-            selectBtn.style.display = 'none';
             resetBtn.style.display = 'none';
         });
     </script>

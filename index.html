@@ -217,15 +217,39 @@
             margin-right: 10px;
         }
         
-        .question-content {
+        /* 添加下拉框样式 */
+        .question-select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            font-size: 16px;
             color: #34495e;
-            line-height: 1.6;
-            margin-bottom: 20px;
-            font-size: 18px;
+            background-color: #fff;
+            margin-bottom: 15px;
+            outline: none;
+            cursor: pointer;
+        }
+        
+        .question-select:focus {
+            border-color: #9b59b6;
+            box-shadow: 0 0 5px rgba(155, 89, 182, 0.3);
+        }
+        
+        .question-display {
             padding: 15px;
             background-color: #f8f9fa;
             border-radius: 8px;
-            border-left: 3px solid #9b59b6;
+
+            font-size: 18px;
+            color: #34495e;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .question-display.visible {
+            display: block;
         }
         
         .students-container {
@@ -493,7 +517,31 @@
     </style>
 </head>
 <body>
-    
+    <div class="top-nav">
+        <div class="nav-left">
+            <img src="avatars/logo.jpg" alt="平台logo" class="platform-logo">
+            <div class="platform-title">遥感大模型实践创新平台</div>
+            <ul class="nav-menu">
+                <li><a href="#">平台资源</a></li>
+                <li><a href="#">数据检索</a></li>
+                <li><a href="#">任务管理</a></li>
+                <li><a href="#">模型推理</a></li>
+                <li><a href="#">模型学习</a></li>
+                <li><a href="#">实习实训</a></li>
+                <li><a href="#" class="active">学科问答</a></li>
+                <li><a href="#">关于我们</a></li>
+            </ul>
+        </div>
+        <div class="nav-right">
+            <div class="search-box">
+                <input type="text" placeholder="输入搜索内容">
+                <button>🔍</button>
+            </div>
+            <div class="user-info">
+                <span>用户20213021</span>
+            </div>
+        </div>
+    </div>
 
     <div class="container">
         <header>
@@ -504,7 +552,7 @@
             </div>
         </header>
         
-        <!-- <div class="knowledge-container" id="knowledgeContainer">
+        <div class="knowledge-container" id="knowledgeContainer">
             <div class="knowledge-title">知识点：人工智能在教育中的应用</div>
             <div class="knowledge-content">
                 <p>人工智能在教育领域的应用正在迅速发展，主要体现在以下几个方面：</p>
@@ -514,11 +562,16 @@
                 <p>4. <strong>教学管理优化</strong>：AI可以帮助教师管理课堂，分析教学效果，并提供改进建议。</p>
                 <p>5. <strong>教育数据分析</strong>：通过分析大量教育数据，AI可以发现学习模式和趋势，帮助教育机构制定更有效的教学策略。</p>
             </div>
-        </div> -->
+        </div>
         
         <div class="question-container" id="questionContainer">
             <div class="question-title">教师提问</div>
-            <textarea id="teacherQuestion" placeholder="请输入问题..." rows="4" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ddd; font-size: 16px; resize: vertical;"></textarea>
+            <select id="questionSelect" class="question-select">
+                <option value="">-- 请选择问题 --</option>
+                <option value="1">问题1：人工智能如何实现个性化学习？</option>
+                <option value="2">问题2：智能辅导系统的主要功能有哪些？</option>
+            </select>
+            <div id="questionDisplay" class="question-display"></div>
         </div>
         
         <button class="select-btn" id="selectBtn">挑选需要回答的学生</button>
@@ -566,23 +619,40 @@
             { id: "2023302131211", name: "文诗语", avatar: "avatars/20.jpg", score: 80 }
         ];
         
+        const presetQuestions = {
+            "1": "人工智能如何实现个性化学习？请结合知识点详细说明AI如何分析学生学习行为并提供定制化学习路径。",
+            "2": "智能辅导系统的主要功能有哪些？请详细描述AI辅导系统如何提供即时反馈和针对性指导。",
+        };
+
         const selectBtn = document.getElementById('selectBtn');
         const resetBtn = document.getElementById('resetBtn');
         const questionContainer = document.getElementById('questionContainer');
+        const questionSelect = document.getElementById('questionSelect');
+        const questionDisplay = document.getElementById('questionDisplay');
         const studentsContainer = document.getElementById('studentsContainer');
         const selectedStudents = document.getElementById('selectedStudents');
         const loadingOverlay = document.getElementById('loadingOverlay');
         const loadingText = document.getElementById('loadingText');
         const loadingProgressFill = document.getElementById('loadingProgressFill');
         
-        // 选择预习情况不理想的学生
-        function selectStudents() {
-            // 获取教师输入的问题
-            const teacherQuestion = document.getElementById('teacherQuestion').value;
+        questionSelect.addEventListener('change', function() {
+            const selectedValue = this.value;
+            if (selectedValue) {
+                questionDisplay.textContent = presetQuestions[selectedValue];
+                questionDisplay.classList.add('visible');
+            } else {
+                questionDisplay.classList.remove('visible');
+            }
+        });
+        
+                // 选择学生
+                function selectStudents() {
+            // 获取选择的问题
+            const selectedQuestionValue = questionSelect.value;
             
-            // 如果教师没有输入问题，提示并返回
-            if (!teacherQuestion.trim()) {
-                alert('请先输入问题再挑选学生');
+            // 如果没有选择问题，提示并返回
+            if (!selectedQuestionValue) {
+                alert('请先选择一个问题再挑选学生');
                 return;
             }
             
@@ -600,7 +670,7 @@
                     setTimeout(() => {
                         loadingOverlay.classList.remove('active');
                         
-                        // 选择分数最低的3个学生
+                        // 随机选择3个学生
                         const shuffledStudents = [...students].sort(() => 0.5 - Math.random());
                         const selectedStudentsData = shuffledStudents.slice(0, 3);
                         
@@ -644,7 +714,15 @@
                             <div class="student-id">${student.id}</div>
                         </div>
                     </div>
-                    
+                    <div class="student-score">
+                        <div class="score-item">
+                            <span class="score-label">预习得分：</span>
+                            <span class="score-value ${scoreClass}">${student.score}</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${student.score}%"></div>
+                        </div>
+                    </div>
                 `;
                 
                 selectedStudents.appendChild(card);
@@ -671,8 +749,9 @@
             setTimeout(() => {
                 studentsContainer.style.display = 'none';
                 
-                // 清空教师问题输入框
-                document.getElementById('teacherQuestion').value = '';
+                // 重置问题选择
+                questionSelect.value = "";
+                questionDisplay.classList.remove('visible');
                 
                 // 显示选择按钮，隐藏重置按钮
                 selectBtn.style.display = 'block';

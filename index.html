@@ -557,25 +557,15 @@
             </div>
         </header>
         
-        <div class="knowledge-container" id="knowledgeContainer">
-            <div class="knowledge-title">知识点：人工智能在教育中的应用</div>
-            <div class="knowledge-content">
-                <p>人工智能在教育领域的应用正在迅速发展，主要体现在以下几个方面：</p>
-                <p>1. <strong>个性化学习</strong>：AI可以分析学生的学习行为、偏好和成绩，提供量身定制的学习路径和资源，使每个学生都能按照自己的节奏和方式学习。</p>
-                <p>2. <strong>智能辅导系统</strong>：AI辅导系统可以提供即时反馈，解答学生问题，并根据学生的错误模式提供针对性指导。</p>
-                <p>3. <strong>自动评估</strong>：AI可以自动评估学生的作业和考试，不仅包括客观题，还能评估论文和开放性问题。</p>
-                <p>4. <strong>教学管理优化</strong>：AI可以帮助教师管理课堂，分析教学效果，并提供改进建议。</p>
-                <p>5. <strong>教育数据分析</strong>：通过分析大量教育数据，AI可以发现学习模式和趋势，帮助教育机构制定更有效的教学策略。</p>
-            </div>
-        </div>
+       
         
         <div class="question-container" id="questionContainer">
-            <div class="question-title">教师提问</div>
+            <div class="question-title">模型提问</div>
             <select id="questionSelect" class="question-select">
                 <option value="">-- 请选择问题 --</option>
-                <option value="1">问题1：不同神经网络的区别？</option>
-                <option value="2">问题2：全量微调和高效微调的区别？</option>
-                <option value="3">问题3：不同领域视觉基础模型的区别？</option>
+                <option value="1">问题1：深度网络</option>
+                <option value="2">问题2：计算机视觉基础模型</option>
+                <option value="3">问题3：遥感视觉基础模型</option>
             </select>
             <div id="questionDisplay" class="question-display"></div>
         </div>
@@ -793,15 +783,7 @@
                             <div class="student-id">${student.id}</div>
                         </div>
                     </div>
-                    <div class="student-score">
-                        <div class="score-item">
-                            <span class="score-label">预习得分：</span>
-                            <span class="score-value ${getScoreClass(student.score)}">${student.score}</span>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: ${student.score}%; background-color: ${progressColor};"></div>
-                        </div>
-                    </div>
+                    
                 `;
                 
                 selectedStudents.appendChild(card);

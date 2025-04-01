@@ -546,6 +546,8 @@
     </style>
 </head>
 <body>
+    
+
     <div class="container">
         <header>
             <h1>大模型智能提问系统</h1>
@@ -555,13 +557,15 @@
             </div>
         </header>
         
+       
+        
         <div class="question-container" id="questionContainer">
             <div class="question-title">模型提问</div>
             <select id="questionSelect" class="question-select">
                 <option value="">-- 请选择问题 --</option>
-                <option value="1">问题1：深度网络</option>
-                <option value="2">问题2：计算机视觉基础模型</option>
-                <option value="3">问题3：遥感视觉基础模型</option>
+                <option value="1">问题1：不同神经网络的区别？</option>
+                <option value="2">问题2：全量微调和高效微调的区别？</option>
+                <option value="3">问题3：不同领域视觉基础模型的区别？</option>
             </select>
             <div id="questionDisplay" class="question-display"></div>
         </div>
@@ -659,6 +663,55 @@
             "3": "遥感视觉基础模型相较于计算机视觉基础模型，在设计上应具备哪些独特考量？"
         };
 
+        const clickCounts = {
+            good: 0,
+            poor: 0
+        };
+
+        // 预设的学生组合
+        const presetStudents = {
+            good: [
+                // 第一次点击显示的学生
+                [
+                    students.find(s => s.id === "2023302131134"), // 汪新悦
+                    students.find(s => s.id === "2023302131284"), // 李欣怡
+                    students.find(s => s.id === "2023302131326")  // 苏靖茹
+                ],
+                // 第二次点击显示的学生
+                [
+                    students.find(s => s.id === "2023302131142"), // 杨恩
+                    students.find(s => s.id === "2023302131196"), // 成子莹
+                    students.find(s => s.id === "2023302131299")  // 周帅
+                ],
+                // 第三次点击显示的学生
+                [
+                    students.find(s => s.id === "2023302131309"), 
+                    students.find(s => s.id === "2023302131115"), // 徐豪
+                    students.find(s => s.id === "2023302131195")  // 张馨怡
+                ]
+            ],
+            poor: [
+                // 第一次点击显示的学生
+                [
+                    students.find(s => s.id === "2023302131026"), // 何思源
+                    students.find(s => s.id === "2023302131071"), // 陈雨楠
+                    students.find(s => s.id === "2023312131002")  // 孔靖慇
+                ],
+                // 第二次点击显示的学生
+                [
+                    students.find(s => s.id === "2023302131050"), // 曹子涛
+                    students.find(s => s.id === "2023302131151"), // 周明坤
+                    students.find(s => s.id === "2023302131172")  // 牛仕博
+                ],
+                // 第三次点击显示的学生
+                [
+                    students.find(s => s.id === "2023302131235"), // 曾泓源
+                    students.find(s => s.id === "2023302131068"), // 桑浩明
+                    students.find(s => s.id === "2023302131081")  // 许安然
+                ]
+            ]
+        };
+
         const selectBtn = document.getElementById('selectBtn');
         const resetBtn = document.getElementById('resetBtn');
         const questionContainer = document.getElementById('questionContainer');
@@ -671,7 +724,7 @@
         const loadingProgressFill = document.getElementById('loadingProgressFill');
         
         questionSelect.addEventListener('change', function() {
-            const selectedValue = this.value;
+            const selectedValue = this.value;020
             if (selectedValue) {
                 questionDisplay.innerHTML = presetQuestions[selectedValue]; // 将 textContent 改为 innerHTML
                 questionDisplay.classList.add('visible');
@@ -685,6 +738,12 @@
             
             if (!selectedQuestionValue) {
                 alert('请先选择一个问题再挑选学生');
+                return;
+            }
+
+            // 检查点击次数
+            if (clickCounts[type] >= 3) {
+                alert('已经完成了三轮选择');
                 return;
             }
             
@@ -702,13 +761,8 @@
                         loadingOverlay.classList.remove('active');
                         
                         // 根据类型筛选学生
-                        const filteredStudents = type === 'good' 
-                            ? students.filter(s => s.score >= 85)
-                            : students.filter(s => s.score < 85);
-                        
-                        // 随机选择3个学生
-                        const shuffledStudents = [...filteredStudents].sort(() => 0.5 - Math.random());
-                        const selectedStudentsData = shuffledStudents.slice(0, 3);
+                        const selectedStudentsData = presetStudents[type][clickCounts[type]];
+                        clickCounts[type]++;
                         
                         studentsContainer.style.display = 'block';
                         setTimeout(() => {
@@ -780,6 +834,15 @@
                         <div class="student-info">
                             <div class="student-name">${student.name}</div>
                             <div class="student-id">${student.id}</div>
+                        </div>
+                    </div>
+                    <div class="student-score">
+                        <div class="score-item">
+                            <span class="score-label">预习得分：</span>
+                            <span class="score-value ${getScoreClass(student.score)}">${student.score}</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${student.score}%; background-color: ${progressColor};"></div>
                         </div>
                     </div>
                 `;

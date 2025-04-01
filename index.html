@@ -546,7 +546,7 @@
     </style>
 </head>
 <body>
-    
+
 
     <div class="container">
         <header>
@@ -557,15 +557,15 @@
             </div>
         </header>
         
-       
+
         
         <div class="question-container" id="questionContainer">
-            <div class="question-title">模型提问</div>
+            <div class="question-title">教师提问</div>
             <select id="questionSelect" class="question-select">
                 <option value="">-- 请选择问题 --</option>
-                <option value="1">问题1：不同神经网络的区别？</option>
-                <option value="2">问题2：全量微调和高效微调的区别？</option>
-                <option value="3">问题3：不同领域视觉基础模型的区别？</option>
+                <option value="1">问题1：深度网络</option>
+                <option value="2">问题2：计算机视觉基础模型</option>
+                <option value="3">问题3：遥感视觉基础模型</option>
             </select>
             <div id="questionDisplay" class="question-display"></div>
         </div>
@@ -576,7 +576,7 @@
         </div>
         
         <div class="students-container" id="studentsContainer">
-            <div class="students-title">预习情况需要提升的学生：</div>
+            <div class="students-title">预习情况有待深化的学生：</div>
             <div class="selected-students" id="selectedStudents">
                 <!-- 学生卡片将在这里动态生成 -->
             </div>
@@ -724,7 +724,7 @@
         const loadingProgressFill = document.getElementById('loadingProgressFill');
         
         questionSelect.addEventListener('change', function() {
-            const selectedValue = this.value;020
+            const selectedValue = this.value;
             if (selectedValue) {
                 questionDisplay.innerHTML = presetQuestions[selectedValue]; // 将 textContent 改为 innerHTML
                 questionDisplay.classList.add('visible');
@@ -770,7 +770,7 @@
                         }, 100);
                         
                         // 更新标题文本
-                        const titleText = type === 'good' ? '预习情况优秀的学生：' : '预习情况需要提升的学生：';
+                        const titleText = type === 'good' ? '预习知识优秀的学生：' : '预习情况需要提升的学生：';
                         document.querySelector('.students-title').textContent = titleText;
                         
                         renderSelectedStudents(selectedStudentsData);
@@ -790,7 +790,7 @@
                         } else {
                             buttonContainer.innerHTML = `
                                 <button class="reset-btn" onclick="resetPage()" style="margin: 0; display: inline-block;">重新开始</button>
-                                <button class="select-btn" onclick="selectStudents('poor')" style="margin: 0;">挑选预习情况不好的学生</button>
+                                <button class="select-btn" onclick="selectStudents('poor')" style="margin: 0;">挑选预习知识有待深化的学生</button>
                             `;
                         }
                         
